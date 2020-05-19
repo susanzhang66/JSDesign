@@ -54,3 +54,33 @@ function validate() {
 
     return Validator;
 }
+
+
+// 使用方式
+function validtaFunc(){
+	var validator = new Validator();
+
+	validator.add( username[0], [{ruleName:'isNonEmpty',errorMsg:'手机号码不能为空'},{ruleName:'isMobile',errorMsg:'请填写正确的手机号码'}]);
+	validator.add( password[0], [{ruleName:'isNonEmpty',errorMsg:'密码不能为空'},{ruleName:'minLength:6',errorMsg:'密码不能小于6位数'}]);
+	validator.add( conVcode[0], [{ruleName:'isNonEmpty',errorMsg:'短信验证码不能为空'}]);
+
+	var errorMsg = validator.start();
+	return errorMsg;
+}
+
+btnLogin.on('tap', function() {
+    var errorMsg =validtaFunc ();
+    if ( errorMsg ){
+        $.tips(errorMsg);
+        return false;
+    }else{
+        var data = {
+            phone:username.val(),
+            pwd:password.val(),
+            identifyingCode:conVcode.val()
+        }
+        get_back(data);
+    }
+
+    return false;
+});
